@@ -19,5 +19,15 @@ class Movie extends Controller{
         die;
 
         $this->view('movie/results', ['movie' => $movie]);
+
+        // COSC Project
+        //   movie [search.....]
+        // [SEARCH BUTTON]  
+
+        // Barbie Rating: 1 (a href="/movie/review/barbie/1") 2 3 4 5
+    }
+
+    public function review($movie_title='', $rating=''){
+        //if rating is not 1, 2, 3, 4 and 5... etc.
     }
 }
