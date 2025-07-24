@@ -5,29 +5,14 @@ class Movie extends Controller{
         $this->view('movie/index');
     }
 
-    public function search(){
-        if (!isset($_REQUEST['movie'])){
-          //redirect to /movie
-        }
-
-        $api = this->model('Api');
-        $movie_title = $_REQUEST['movie'];
+    public function search() {
+        if (!isset($_GET['movie']) || empty(trim($_GET['movie']))) {
+            header('Location: /movie');
+            exit;
+    }
+        $api = $this->model('Api');
+        $movie_title = $_GET['movie'];
         $movie = $api->search_movie($movie_title);
 
-        echo "<pre>";
-        print_r($movie);
-        die;
-
-        $this->view('movie/results', ['movie' => $movie]);
-
-        // COSC Project
-        //   movie [search.....]
-        // [SEARCH BUTTON]  
-
-        // Barbie Rating: 1 (a href="/movie/review/barbie/1") 2 3 4 5
-    }
-
-    public function review($movie_title='', $rating=''){
-        //if rating is not 1, 2, 3, 4 and 5... etc.
-    }
-}
+        $this->view('movie/results', ['movie' => $movie, 'searchTerm' => $movie_title]);
+    }}

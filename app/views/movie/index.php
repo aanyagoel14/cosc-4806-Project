@@ -14,25 +14,9 @@
 <body>
     <h1>Movie Search</h1>
 
-    <!-- Search Form -->
-    <form method="get" action="/movie">
+    <form method="get" action="/movie/search">
         <input type="text" name="movie" value="<?= htmlspecialchars($searchTerm ?? '') ?>" placeholder="Enter movie title">
         <button type="submit">Search</button>
     </form>
-
-    <!-- Results Section -->
-    <?php if (isset($movie)): ?>
-        <div class="movie-result">
-            <?php if ($movie && !isset($movie->Error)): ?>
-                <h2><?= htmlspecialchars($movie->Title ?? '') ?> (<?= htmlspecialchars($movie->Year ?? '') ?>)</h2>
-                <p><strong>Plot:</strong> <?= htmlspecialchars($movie->Plot ?? '') ?></p>
-                <p><strong>Director:</strong> <?= htmlspecialchars($movie->Director ?? '') ?></p>
-                <p><strong>Actors:</strong> <?= htmlspecialchars($movie->Actors ?? '') ?></p>
-                <p><strong>IMDB Rating:</strong> <?= htmlspecialchars($movie->imdbRating ?? '') ?></p>
-            <?php else: ?>
-                <p>No movie found for "<?= htmlspecialchars($searchTerm) ?>".</p>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
 </body>
 </html>
