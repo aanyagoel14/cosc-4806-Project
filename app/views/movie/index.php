@@ -3,12 +3,12 @@
 <head>
     <title>Movie Search</title>
     <style>
-        /* .movie-result {
+        .movie-result {
             margin-top: 20px;
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
-        } */
+        }
     </style>
 </head>
 <body>

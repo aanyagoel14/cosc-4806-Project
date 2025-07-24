@@ -2,7 +2,6 @@
 class Api { 
     public function search_movie($title) { 
         $api_key = $_ENV['omdb_key'] ?? getenv('omdb_key') ?? '';
-
         if (empty($api_key)) {
             return (object)['Response' => 'False', 'Error' => 'API key not configured'];
         }
