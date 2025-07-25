@@ -16,3 +16,18 @@ class Movie extends Controller{
 
         $this->view('movie/results', ['movie' => $movie, 'searchTerm' => $movie_title]);
     }}
+
+    public function review(){
+        $this->view('movie/review');
+        $review->saveRating(
+                $imdb_id,
+                $_SESSION['current_movie_title'], // Set this when showing movie
+                $rating,
+                $_SESSION['user_id'] ?? null // If you have auth
+            );
+
+            header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie_title']));
+            exit;
+        }
+        
+    }
