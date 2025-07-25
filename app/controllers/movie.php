@@ -9,25 +9,40 @@ class Movie extends Controller{
         if (!isset($_GET['movie']) || empty(trim($_GET['movie']))) {
             header('Location: /movie');
             exit;
-    }
+        }
+    
         $api = $this->model('Api');
-        $movie_title = $_GET['movie'];
+        $movie_title = trim($_GET['movie']);
         $movie = $api->search_movie($movie_title);
 
-        $this->view('movie/results', ['movie' => $movie, 'searchTerm' => $movie_title]);
+        $_SESSION['current_movie'] = [
+            'title' => $movie->Title,
+            'imdb_id' => $movie->imdbID
+        ];
+    
+        $this->view('movie/results', [
+            'movie' => $movie, 
+            'searchTerm' => $movie_title
+        ]);
     }
-
-    public function review($imdb_id = '', $rating = ''){
-        $this->view('movie/review');
-        $review->saveRating(
-                $imdb_id,
-                $_SESSION['current_movie_title'], // Set this when showing movie
-                $rating,
-                $_SESSION['user_id'] ?? null // If you have auth
-            );
-
-            header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie_title']));
+    
+    public function review($rating = '') {
+        if (!is_numeric($rating) || $rating < 1 || $rating > 5 || 
+            !isset($_SESSION['current_movie'])) {
+            header('Location: /movie');
             exit;
         }
-}
-    
+
+        $review = $this->model('Review');
+        $result = $review->saveRating(
+            $_SESSION['current_movie']['imdb_id'],
+            $_SESSION['current_movie']['title'],
+            $rating,
+            $_SESSION['user_id'] ?? null
+        );
+
+        $_SESSION['rating_result'] = $result ? 'success' : 'failed';
+
+        header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie']['title']));
+        exit;
+    }}
