@@ -6,7 +6,7 @@ class Movie extends Controller{
     }
 
     public function search() {
-        if (!isset($_GET['movie']) || empty(trim($_GET['movie']))) {
+        // if (!isset($_GET['movie']) || empty(trim($_GET['movie']))) {
             header('Location: /movie');
             exit;
     }
