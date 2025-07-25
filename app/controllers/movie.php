@@ -15,9 +15,9 @@ class Movie extends Controller{
         $movie = $api->search_movie($movie_title);
 
         $this->view('movie/results', ['movie' => $movie, 'searchTerm' => $movie_title]);
-    }}
+    }
 
-    public function review(){
+    public function review($imdb_id = '', $rating = ''){
         $this->view('movie/review');
         $review->saveRating(
                 $imdb_id,
@@ -29,5 +29,5 @@ class Movie extends Controller{
             header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie_title']));
             exit;
         }
-        
-    }
+}
+    
