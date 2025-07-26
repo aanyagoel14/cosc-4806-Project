@@ -1,23 +1,29 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Redirect if not authenticated
 if (!isset($_SESSION['auth'])) {
     header('Location: /login');
     exit;
 }
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Explorer</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    
+
     <style>
+        
         :root {
             --primary: #0d253f;
             --secondary: #01b4e4;
@@ -192,6 +198,7 @@ if (!isset($_SESSION['auth'])) {
             </div>
         
         <?php else: // Default home page content ?>
+            
         <?php endif; ?>
     </main>
 

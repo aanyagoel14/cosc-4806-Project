@@ -1,4 +1,4 @@
-    <?php require_once 'app/views/templates/header.php' ?>
+<?php require_once 'app/views/templates/header.php' ?>
 
     <div class="container mt-4">
         <!-- Welcome Section -->
