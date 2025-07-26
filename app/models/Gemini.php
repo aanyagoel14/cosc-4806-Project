@@ -10,7 +10,7 @@ class Gemini {
     public function generateReview($movieTitle, $movieYear, $plot) {
         $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$this->apiKey}";
 
-        $prompt = "Write a professional 150-word movie review for {$movieTitle} ({$movieYear}).\n\n";
+        $prompt = "Give me a review for {$movieTitle} ({$movieYear}) from someone that has an average of 4 out of 5.\n\n";
 
         $data = [
             'contents' => [
