@@ -192,13 +192,6 @@ if (!isset($_SESSION['auth'])) {
             </div>
         
         <?php else: // Default home page content ?>
-            <div class="user-greeting text-center">
-                <h1 class="display-4">Welcome back, <?= htmlspecialchars($_SESSION['username']) ?>!</h1>
-                <p class="lead">Discover and rate your favorite movies</p>
-                <a href="/movie" class="btn btn-explore mt-3">
-                    <i class="bi bi-search"></i> Search Movies
-                </a>
-            </div>
         <?php endif; ?>
     </main>
 
