@@ -1,60 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Movie Search Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($movie->Title ?? 'Movie Search') ?></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
-        .movie-result {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .rating-message {
-            padding: 10px;
-            margin: 10px 0;
-            background: #dff0d8;
-            border: 1px solid #d6e9c6;
-            border-radius: 4px;
-            color: #3c763d;
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
         }
 
-        .rating-container, .rate-movie {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #fff9e6;
-            border-radius: 8px;
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .rating-title, .rate-title {
-            font-weight: bold;
-            margin-bottom: 10px;
+        .movie-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .popcorn-rating, .rating-buttons {
+        .movie-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .movie-poster {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            min-height: 400px;
+        }
+
+        .movie-details {
+            padding: 2rem;
+        }
+
+        .movie-title {
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .movie-year {
+            color: #636e72;
+            font-weight: 400;
+        }
+
+        .movie-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .rating-container {
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        /* Community Rating Popcorn (fixed size) */
+        .popcorn-rating {
             font-size: 24px;
             letter-spacing: 5px;
             margin: 10px 0;
         }
 
-        .popcorn-full, .popcorn-btn {
+        .popcorn-full {
             color: #ffc107;
             text-shadow: 0 0 3px rgba(255, 193, 7, 0.5);
-            cursor: pointer;
-            margin: 0 5px;
-            transition: all 0.2s;
-            background: none;
-            border: none;
-            text-decoration: none;
-            display: inline-block;
         }
 
         .popcorn-half {
             position: relative;
-            display: inline-block;
             color: #ffc107;
         }
 
@@ -72,35 +121,50 @@
             color: #ddd;
         }
 
-        .popcorn-btn:hover, .user-rated {
-            transform: scale(1.3);
+        /* Rate This Movie Popcorn (growing size) */
+        .rating-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .rating-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .rating-btn:hover {
             filter: drop-shadow(0 0 5px gold);
         }
 
-        .rating-stats {
-            margin-top: 10px;
-            font-style: italic;
-            color: #666;
+        .user-rated {
+            filter: drop-shadow(0 0 5px gold);
+            transform: scale(1.1);
         }
 
-        .ai-review {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f8ff;
-            border-radius: 8px;
+        .ai-review-section {
+            background: rgba(253, 121, 168, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
         }
 
-        .ai-review button {
-            padding: 8px 16px;
-            background: #4285f4;
+        .btn-ai {
+            background: var(--accent);
             color: white;
             border: none;
+            padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
         }
 
-        .ai-review button:hover {
+        .btn-ai:hover {
             background: #3367d6;
         }
 
@@ -108,106 +172,180 @@
             margin-top: 10px;
             line-height: 1.6;
         }
+
+        .back-btn {
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            color: #fffa65;
+            transform: translateX(-3px);
+        }
+
+        .alert-success {
+            background: rgba(46, 213, 115, 0.2);
+            border-color: rgba(46, 213, 115, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .movie-poster {
+                min-height: 300px;
+            }
+
+            .rating-btn {
+                font-size: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Movie Search</h1>
-    <p><a href="/movie">← New Search</a></p>
-
-    <?php if (isset($movie)): ?>
-        <?php if (!isset($movie->Error)): ?>
-            <?php
-            // Get real rating data
-            $review = $this->model('Review');
-            $avg_rating = $review->getAverageRating($movie->imdbID);
-            $rating_count = $review->getRatingCount($movie->imdbID);
-            $user_rating = isset($_SESSION['user_id']) ? 
-                $review->getUserRating($movie->imdbID, $_SESSION['user_id']) : null;
-
-            // Show rating result message if exists
-            if (isset($_SESSION['rating_result'])) {
-                $message = ($_SESSION['rating_result'] === 'success') ? 
-                    'Thank you for your rating!' : 'Failed to save rating';
-                echo "<div class='rating-message'>$message</div>";
-                unset($_SESSION['rating_result']);
-            }
-            ?>
-
-            <div class="movie-result">
-                <h2><?= htmlspecialchars($movie->Title ?? '') ?> (<?= htmlspecialchars($movie->Year ?? '') ?>)</h2>
-                <p><strong>Plot:</strong> <?= htmlspecialchars($movie->Plot ?? '') ?></p>
-                <p><strong>Director:</strong> <?= htmlspecialchars($movie->Director ?? '') ?></p>
-                <p><strong>Actors:</strong> <?= htmlspecialchars($movie->Actors ?? '') ?></p>
-                <p><strong>IMDB Rating:</strong> <?= htmlspecialchars($movie->imdbRating ?? '') ?></p>
-
-                <!-- Community Rating Section -->
-                <div class="rating-container">
-                    <div class="rating-title">Community Rating:</div>
-                    <div class="popcorn-rating">
-                        <?php
-                        $full = floor($avg_rating);
-                        $has_half = (($avg_rating - $full) >= 0.5);
-                        $empty = 5 - ceil($avg_rating);
-                        
-                        // Full popcorns
-                        for ($i = 0; $i < $full; $i++) {
-                            echo '<span class="popcorn-full">🍿</span>';
-                        }
-                        
-                        // Half popcorn
-                        if ($has_half) {
-                            echo '<span class="popcorn-half">🍿</span>';
-                        }
-                        
-                        // Empty popcorns
-                        for ($i = 0; $i < $empty; $i++) {
-                            echo '<span class="popcorn-empty">🍿</span>';
-                        }
-                        ?>
-                    </div>
-                    <div class="rating-stats">
-                        <?= number_format($avg_rating, 1) ?> out of 5 (from <?= $rating_count ?> ratings)
-                        <?php if ($user_rating): ?>
-                            - Your rating: <?= $user_rating ?>/5
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <!-- Rating Form -->
-                <div class="rate-movie">
-                    <div class="rate-title">Rate this movie:</div>
-                    <div class="rating-buttons">
-                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                            <a href="/movie/review/<?= $i ?>" 
-                               class="popcorn-btn <?= ($user_rating == $i) ? 'user-rated' : '' ?>"
-                               title="Rate <?= $i ?>">
-                               🍿
-                            </a>
-                        <?php endfor; ?>
-                    </div>
-                </div>
+    <div class="movie-header animate__animated animate__fadeIn">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="/movie" class="back-btn animate__animated animate__fadeInLeft">
+                    <i class="fas fa-arrow-left"></i> New Search
+                </a>
+                <h1 class="animate__animated animate__fadeIn">Movie Explorer</h1>
+                <div></div> <!-- Empty div for alignment -->
             </div>
+        </div>
+    </div>
 
-           <!-- AI Review Section -->
-           <!-- NEW: AI Review Section -->
-           <div class="ai-review">
-               <h3>AI-Generated Review</h3>
-               <?php if (isset($_SESSION['ai_review'])): ?>
-                   <div class="review-content">
-                       <?= nl2br(htmlspecialchars($_SESSION['ai_review'])) ?>
-                   </div>
-                   <?php unset($_SESSION['ai_review']); ?>
-               <?php else: ?>
-                   <form action="/movie/generateReview" method="post">
-                       <button type="submit">Generate AI Review</button>
-                   </form>
-               <?php endif; ?>
-           </div>
-           </div>
+    <div class="container animate__animated animate__fadeIn animate__delay-1s">
+        <?php if (isset($movie)): ?>
+            <?php if (!isset($movie->Error)): ?>
+                <?php
+                $review = $this->model('Review');
+                $avg_rating = $review->getAverageRating($movie->imdbID);
+                $rating_count = $review->getRatingCount($movie->imdbID);
+                $user_rating = isset($_SESSION['user_id']) ? 
+                    $review->getUserRating($movie->imdbID, $_SESSION['user_id']) : null;
+                ?>
 
-           <?php else: ?>
-           <p>Error: <?= htmlspecialchars($movie->Error) ?></p>
-           <?php endif; ?>
-           <?php endif; ?>
-           </body>
-           </html>
+                <?php if (isset($_SESSION['rating_result'])): ?>
+                    <div class="alert alert-success animate__animated animate__fadeInDown">
+                        <?= ($_SESSION['rating_result'] === 'success') ? 'Thank you for your rating!' : 'Failed to save rating' ?>
+                    </div>
+                    <?php unset($_SESSION['rating_result']); ?>
+                <?php endif; ?>
+
+                <div class="movie-card">
+                    <div class="row">
+                        <?php if (isset($movie->Poster) && $movie->Poster !== 'N/A'): ?>
+                        <div class="col-md-4 p-0">
+                            <div class="movie-poster" style="background-image: url('<?= htmlspecialchars($movie->Poster) ?>')"></div>
+                        </div>
+                        <?php endif; ?>
+                        <div class="<?= (isset($movie->Poster) && $movie->Poster !== 'N/A' ? 'col-md-8' : 'col-12') ?>">
+                            <div class="movie-details">
+                                <h2 class="movie-title"><?= htmlspecialchars($movie->Title) ?></h2>
+                                <p class="movie-year"><?= htmlspecialchars($movie->Year) ?></p>
+
+                                <div class="movie-section">
+                                    <h4 class="section-title">Plot</h4>
+                                    <p><?= htmlspecialchars($movie->Plot) ?></p>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="movie-section">
+                                            <h4 class="section-title">Director</h4>
+                                            <p><?= htmlspecialchars($movie->Director) ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="movie-section">
+                                            <h4 class="section-title">Actors</h4>
+                                            <p><?= htmlspecialchars($movie->Actors) ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="movie-section">
+                                    <h4 class="section-title">IMDB Rating</h4>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-star text-warning me-2"></i>
+                                        <span><?= htmlspecialchars($movie->imdbRating) ?>/10</span>
+                                    </div>
+                                </div>
+
+                                <div class="rating-container">
+                                    <h4 class="section-title">Community Rating</h4>
+                                    <div class="popcorn-rating">
+                                        <?php
+                                        $full = floor($avg_rating);
+                                        $has_half = (($avg_rating - $full) >= 0.5);
+                                        $empty = 5 - ceil($avg_rating);
+
+                                        for ($i = 0; $i < $full; $i++) {
+                                            echo '<span class="popcorn-full">🍿</span>';
+                                        }
+
+                                        if ($has_half) {
+                                            echo '<span class="popcorn-half">🍿</span>';
+                                        }
+
+                                        for ($i = 0; $i < $empty; $i++) {
+                                            echo '<span class="popcorn-empty">🍿</span>';
+                                        }
+                                        ?>
+                                    </div>
+                                    <p class="mt-2">
+                                        <?= number_format($avg_rating, 1) ?> out of 5 (from <?= $rating_count ?> ratings)
+                                        <?php if ($user_rating): ?>
+                                            <br><span class="text-muted">Your rating: <?= $user_rating ?>/5</span>
+                                        <?php endif; ?>
+                                    </p>
+
+                                    <div class="mt-3">
+                                        <h4 class="section-title">Rate this movie</h4>
+                                        <div class="rating-buttons">
+                                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                <button type="button" 
+                                                   onclick="window.location.href='/movie/review/<?= $i ?>'"
+                                                   class="rating-btn <?= ($user_rating == $i) ? 'user-rated' : '' ?>"
+                                                   title="Rate <?= $i ?>"
+                                                   style="font-size: <?= 1 + ($i * 0.2) ?>rem">
+                                                   🍿
+                                                </button>
+                                            <?php endfor; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ai-review-section">
+                                    <h4 class="section-title">AI-Generated Review</h4>
+                                    <?php if (isset($_SESSION['ai_review'])): ?>
+                                        <div class="review-content mt-3">
+                                            <?= nl2br(htmlspecialchars($_SESSION['ai_review'])) ?>
+                                        </div>
+                                        <?php unset($_SESSION['ai_review']); ?>
+                                    <?php else: ?>
+                                        <form action="/movie/generateReview" method="post">
+                                            <button type="submit" class="btn-ai">
+                                                <i class="fas fa-robot"></i> Generate AI Review
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="alert alert-danger animate__animated animate__shakeX">
+                    Error: <?= htmlspecialchars($movie->Error) ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

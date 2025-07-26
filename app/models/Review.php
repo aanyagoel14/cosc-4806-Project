@@ -39,7 +39,7 @@ class Review {
         $statement->execute([$imdb_id]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $result ? round($result['avg_rating'], 1) : 0;
+        return isset($result['avg_rating']) ? round((float)$result['avg_rating'], 1) : 0;
     }
 
     public function getRatingCount($imdb_id) {
