@@ -82,6 +82,32 @@
             font-style: italic;
             color: #666;
         }
+
+        .ai-review {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+
+        .ai-review button {
+            padding: 8px 16px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .ai-review button:hover {
+            background: #3367d6;
+        }
+
+        .review-content {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -162,9 +188,26 @@
                 </div>
             </div>
 
-        <?php else: ?>
-            <p>Error: <?= htmlspecialchars($movie->Error) ?></p>
-        <?php endif; ?>
-    <?php endif; ?>
-</body>
-</html>
+           <!-- AI Review Section -->
+           <!-- NEW: AI Review Section -->
+           <div class="ai-review">
+               <h3>AI-Generated Review</h3>
+               <?php if (isset($_SESSION['ai_review'])): ?>
+                   <div class="review-content">
+                       <?= nl2br(htmlspecialchars($_SESSION['ai_review'])) ?>
+                   </div>
+                   <?php unset($_SESSION['ai_review']); ?>
+               <?php else: ?>
+                   <form action="/movie/generateReview" method="post">
+                       <button type="submit">Generate AI Review</button>
+                   </form>
+               <?php endif; ?>
+           </div>
+           </div>
+
+           <?php else: ?>
+           <p>Error: <?= htmlspecialchars($movie->Error) ?></p>
+           <?php endif; ?>
+           <?php endif; ?>
+           </body>
+           </html>

@@ -8,6 +8,13 @@ class App {
     protected $params = [];
 
     public function __construct() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && 
+            parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/movie/generateReview') {
+            require_once 'app/controllers/movie.php';
+            $controller = new Movie();
+            $controller->generateReview();
+            return;
+        }
         if (isset($_SESSION['auth']) == 1) {
             //$this->method = 'index';
             $this->controller = 'home';

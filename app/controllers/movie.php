@@ -19,6 +19,9 @@ class Movie extends Controller{
             'title' => $movie->Title,
             'imdb_id' => $movie->imdbID
         ];
+
+        $_SESSION['current_movie']['plot'] = $movie->Plot ?? '';
+        $_SESSION['current_movie']['year'] = $movie->Year ?? '';
     
         $this->view('movie/results', [
             'movie' => $movie, 
@@ -46,8 +49,6 @@ class Movie extends Controller{
         header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie']['title']));
         exit;
     }
-
-    // app/controllers/Movie.php
     public function generateReview() {
         if (!isset($_SESSION['current_movie'])) {
             header('Location: /movie');
@@ -57,13 +58,13 @@ class Movie extends Controller{
         $gemini = $this->model('Gemini');
         $review = $gemini->generateReview(
             $_SESSION['current_movie']['title'],
-            $_SESSION['current_movie']['year'] ?? date('Y'),
-            $_SESSION['current_movie']['plot'] ?? ''
+            $_SESSION['current_movie']['year'],
+            $_SESSION['current_movie']['plot']
         );
 
         $_SESSION['ai_review'] = $review;
         header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie']['title']));
         exit;
     }
-
-}
+    }
+    ?>
