@@ -38,10 +38,6 @@ class Gemini {
                 [
                     'category' => 'HARM_CATEGORY_DANGEROUS_CONTENT',
                     'threshold' => 'BLOCK_ONLY_HIGH'
-                ],
-                [
-                    'category' => 'HARM_CATEGORY_HARASSMENT',
-                    'threshold' => 'BLOCK_ONLY_HIGH'
                 ]
             ]
         ];
@@ -51,8 +47,7 @@ class Gemini {
                 'header' => "Content-type: application/json\r\n",
                 'method' => 'POST',
                 'content' => json_encode($data),
-                'ignore_errors' => true,
-                'timeout' => 15
+                'ignore_errors' => true
             ]
         ];
 

@@ -1,10 +1,7 @@
 <?php
-// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-// Redirect if not authenticated
 if (!isset($_SESSION['auth'])) {
     header('Location: /login');
     exit;
@@ -15,11 +12,7 @@ if (!isset($_SESSION['auth'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Explorer</title>
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
     <style>
@@ -128,7 +121,6 @@ if (!isset($_SESSION['auth'])) {
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -157,9 +149,8 @@ if (!isset($_SESSION['auth'])) {
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="container mt-4">
-        <?php if (isset($movie)): // Movie details page ?>
+        <?php if (isset($movie)):  ?>
             <div class="row">
                 <div class="col-md-4">
                     <img src="<?= $movie->Poster ?>" class="movie-poster img-fluid mb-4" alt="<?= $movie->Title ?>">
@@ -197,12 +188,11 @@ if (!isset($_SESSION['auth'])) {
                 </div>
             </div>
         
-        <?php else: // Default home page content ?>
+        <?php else: ?>
             
         <?php endif; ?>
     </main>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

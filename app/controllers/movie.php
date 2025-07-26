@@ -10,7 +10,6 @@ class Movie extends Controller{
             header('Location: /movie');
             exit;
         }
-    
         $api = $this->model('Api');
         $movie_title = trim($_GET['movie']);
         $movie = $api->search_movie($movie_title);
@@ -35,7 +34,6 @@ class Movie extends Controller{
             header('Location: /movie');
             exit;
         }
-
         $review = $this->model('Review');
         $result = $review->saveRating(
             $_SESSION['current_movie']['imdb_id'],
@@ -65,6 +63,5 @@ class Movie extends Controller{
         $_SESSION['ai_review'] = $review;
         header('Location: /movie/search?movie=' . urlencode($_SESSION['current_movie']['title']));
         exit;
-    }
-    }
+    }    }
     ?>
